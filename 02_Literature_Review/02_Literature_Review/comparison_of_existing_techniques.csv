@@ -1,0 +1,5 @@
+Authentication Method,How It Works,Advantage,Limitation,Common Tests
+PUF-based authentication,Uses physical features of a device,Low resource use and unique device identity,"Can be affected by temperature, voltage and ageing","Authentication time, reliability, uniqueness and error rate"
+Lightweight cryptography and mutual authentication,"Uses ECC, hashing, encryption and key exchange",Good balance between security and resource use,Many studies use simulation instead of real devices,"Processing cost, communication cost, authentication time and security"
+Blockchain-based authentication,Uses blockchain and smart contracts,Helps manage device identity and trust,Needs more storage and processing,"Time, storage, communication cost and scalability"
+Machine-learning and physical-layer authentication,"Uses device behaviour, wireless signals and other device information",Can give extra information for authentication,Needs more data and processing power,"Accuracy, precision, recall, F1-score and false-positive rate"
