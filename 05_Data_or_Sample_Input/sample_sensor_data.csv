@@ -1,0 +1,6 @@
+timestamp,device_id,temperature,humidity,device_status,motion_status
+2026-09-01T10:00:00Z,device-001,27.4,61.2,normal,no_motion
+2026-09-01T10:00:05Z,device-002,28.1,59.8,normal,motion_detected
+2026-09-01T10:00:10Z,device-003,29.0,63.4,normal,no_motion
+2026-09-01T10:00:15Z,device-001,27.8,60.9,normal,no_motion
+2026-09-01T10:00:20Z,device-002,28.5,60.1,normal,motion_detected

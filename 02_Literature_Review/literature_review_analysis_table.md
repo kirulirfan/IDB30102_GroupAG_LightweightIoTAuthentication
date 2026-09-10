@@ -7,5 +7,5 @@
 
 > **Notes:**
 > - Study counts (17 / 19 / 8 / 10 out of the 50 papers reviewed in Assignment 1) and all findings above are taken directly from Chapter 2 of the Research Proposal (Sections 2.3–2.6) so this table stays fully consistent with the written proposal.
-> - The "Studies Currently Filed" column lists only papers that already have a PDF in `01_Research_Papers/` with a verified citation in `04_References/04References.md` — this is a working subset of the full 50, not the complete list.
+> - The "Studies Currently Filed" column lists only papers that already have a PDF in `01_Research_Papers/` with a verified citation in `07_References/04References.md` — this is a working subset of the full 50, not the complete list.
 > - Full per-paper details are in the PDFs themselves under `01_Research_Papers/`; exact citation-to-file mapping is in `paper_theme_citation_mapping.csv`.

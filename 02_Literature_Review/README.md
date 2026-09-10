@@ -28,7 +28,7 @@ Sections 2.8.1-2.8.5).
 | `evaluation_metrics.md` | Evaluation metrics identified from previous research | Section 2.7.2 |
 | `references_supporting_methodology.md` | References supporting the proposed methodology | Chapter 3, Section 3.2 |
 | `paper_theme_citation_mapping.csv` | Exact citation for every PDF currently filed in `01_Research_Papers/`, organised by theme folder | Sections 2.3-2.6 |
-| `unfiled_references_by_theme.md` | The 22 remaining verified references (from `04_References/04References.md`) that don't have a PDF filed yet, sorted by likely theme — flags that the ML/Physical-Layer theme has 0 PDFs filed so far | Section 2.6 |
+| `unfiled_references_by_theme.md` | The 22 remaining verified references (from `07_References/04References.md`) that don't have a PDF filed yet, sorted by likely theme — flags that the ML/Physical-Layer theme has 0 PDFs filed so far | Section 2.6 |
 
 ## Consistency Check
 
@@ -53,4 +53,4 @@ Research Presentation should be consistent with one another").
 - `../01_Research_Papers/` — per-paper details and citations (completed separately).
 - `../03_Architecture_and_Flowchart/` — how the research gap and chosen methodology
   translate into the proposed system design.
-- `../04_References/` — full APA reference list for the whole proposal.
+- `../07_References/` — full APA reference list for the whole proposal.

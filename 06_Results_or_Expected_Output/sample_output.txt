@@ -1,0 +1,174 @@
+
+
+##########################################################################################
+# PART 1 / 5 - DEVICE REGISTRY
+##########################################################################################
+Registered device-001: {'status': 'active'}
+Registered device-002: {'status': 'active'}
+Registered device-003: {'status': 'active'}
+
+
+##########################################################################################
+# PART 2 / 5 - AUTHENTICATION DEMO
+##########################################################################################
+======================================================================
+SCENARIO 1: Legitimate registered device - successful mutual authentication
+======================================================================
+[Device ] Registered as 'device-001' with a 32-byte shared secret.
+[Device ] -> Gateway : device_id='device-001', nonce_d=2f4930e6...
+[Gateway] Device is registered. Issuing challenge nonce_g=85e32241...
+[Gateway] -> Device  : nonce_g=85e32241...
+[Device ] Computed HMAC response=ffdbbf6e...
+[Device ] -> Gateway : response=ffdbbf6e...
+[Gateway] Verification result: accepted=True (ok)
+[Gateway] -> Device  : confirmation=c99cc7ed...
+[Device ] Gateway confirmation verified: True
+[Device ] Derived session key: d4979f24...
+[Gateway] Derived session key: d4979f24...
+[Check  ] Both session keys match: True
+
+>>> RESULT: Mutual authentication SUCCESSFUL. Device and gateway now share a temporary session key.
+
+Security event log:
+  [23:31:52] device-001       AUTH_ACCEPTED          mutual authentication successful
+
+======================================================================
+SCENARIO 2: Registered device ID used with an INCORRECT secret
+======================================================================
+[Gateway] Verification result: accepted=False (invalid_response)
+>>> RESULT: REJECTED as expected.
+
+Security event log:
+  [23:31:52] device-002       AUTH_REJECTED          invalid authentication response
+
+======================================================================
+SCENARIO 3: Unregistered ('unknown') device attempts to authenticate
+======================================================================
+[Gateway] Challenge issued (nonce_g): None
+>>> RESULT: REJECTED as expected (no challenge issued).
+
+Security event log:
+  [23:31:52] attacker-device-999 AUTH_REJECTED          device not registered or revoked
+
+
+##########################################################################################
+# PART 3 / 5 - ENCRYPTION DEMO
+##########################################################################################
+======================================================================
+SCENARIO 1: Authenticated device sends an encrypted sensor reading
+======================================================================
+[Setup  ] Mutual authentication completed; session key established.
+
+[Device ] Plaintext sensor reading: {'temperature': 27.4, 'humidity': 61.2, 'device_status': 'normal', 'motion_status': 'no_motion'}
+[Device ] device_id=device-001  nonce=08621e39...  iv=6715efcfa44d7728f59f09fb  ciphertext_len=112 bytes
+[Gateway] Decryption/verification result: accepted=True (ok)
+[Gateway] Recovered plaintext           : {'temperature': 27.4, 'humidity': 61.2, 'device_status': 'normal', 'motion_status': 'no_motion'}
+[Check  ] Recovered == original          : True
+
+>>> RESULT: Message accepted, decrypted and forwarded to the application server.
+
+Security event log:
+  [23:31:52] device-001       AUTH_ACCEPTED          mutual authentication successful
+  [23:31:52] device-001       MESSAGE_ACCEPTED       message decrypted and verified
+
+======================================================================
+SCENARIO 2: Attacker modifies the ciphertext in transit
+======================================================================
+[Device ] device_id=device-001  nonce=0211b154...  iv=60e5e65e0cfa0263c5031be5  ciphertext_len=55 bytes
+[Attacker] Flipped one byte of the ciphertext before forwarding it to the gateway.
+[Gateway ] Decryption/verification result: accepted=False (invalid_tag)
+>>> RESULT: Tampering correctly DETECTED and message REJECTED.
+
+Security event log:
+  [23:31:52] device-001       AUTH_ACCEPTED          mutual authentication successful
+  [23:31:52] device-001       MESSAGE_REJECTED       authentication tag invalid (tampering detected)
+
+======================================================================
+SCENARIO 3: Attacker replays a previously captured, valid message
+======================================================================
+[Gateway] First delivery  : accepted=True (ok)
+[Attacker] Captures the exact same message and resends it unmodified.
+[Gateway] Replayed delivery: accepted=False (replayed_message)
+>>> RESULT: Replay correctly DETECTED and REJECTED.
+
+Security event log:
+  [23:31:52] device-001       AUTH_ACCEPTED          mutual authentication successful
+  [23:31:52] device-001       MESSAGE_ACCEPTED       message decrypted and verified
+  [23:31:52] device-001       MESSAGE_REJECTED       replayed message nonce
+
+
+##########################################################################################
+# PART 4 / 5 - ATTACK SIMULATOR (10 malicious scenarios)
+##########################################################################################
+==============================================================================
+ATTACK SIMULATOR - Malicious Test Scenarios (Section 3.8.3)
+==============================================================================
+[PASS] 1. Unknown device identifier                  -> REJECTED  (no challenge issued)
+[PASS] 2. Registered ID with incorrect secret        -> REJECTED  (invalid_response)
+[PASS] 3. Replayed authentication request            -> REJECTED  (replayed_auth_nonce)
+[PASS] 4. Replayed encrypted sensor message          -> REJECTED  (replayed_message)
+[PASS] 5. Modified ciphertext                        -> REJECTED  (invalid_tag)
+[PASS] 6. Modified authentication tag                -> REJECTED  (invalid_tag)
+[PASS] 7. Expired timestamp                          -> REJECTED  (expired_timestamp)
+[PASS] 8. Reused nonce                               -> REJECTED  (replayed_message)
+[PASS] 9. Revoked device identifier                  -> REJECTED  (no challenge issued)
+[PASS] 10. Repeated invalid requests (local flood)   -> REJECTED  (all 20 requests rejected)
+------------------------------------------------------------------------------
+Result: 10/10 scenarios PASSED (attack correctly detected and rejected).
+Attack-detection rate: 100.0%
+
+
+##########################################################################################
+# PART 5 / 5 - EVALUATION (Table 3.5 metrics)
+##########################################################################################
+==========================================================================================
+EVALUATION - Proposed Framework vs Baseline (Section 3.10, Table 3.5)
+==========================================================================================
+
+Running 30 trials with 5 simulated device(s) ...
+
+Running 30 trials with 10 simulated device(s) ...
+
+Running 30 trials with 25 simulated device(s) ...
+
+Running 30 trials with 50 simulated device(s) ...
+
+--- Summary Table (Table 3.5 metrics) ---
+Devices    | Auth OK %  | FAR %      | FRR %      | Auth (ms)  | Encrypt (ms) | Decrypt (ms) | Overhead (B) | Peak Mem (B)
+-----------+------------+------------+------------+------------+--------------+--------------+--------------+-------------
+5          | 100.0      | 0.0        | 0.0        | 0.014      | 0.008        | 0.006        | 40.0         | 3472        
+10         | 100.0      | 0.0        | 0.0        | 0.014      | 0.008        | 0.008        | 40.0         | 3408        
+25         | 100.0      | 0.0        | 0.0        | 0.014      | 0.008        | 0.005        | 40.0         | 3343        
+50         | 100.0      | 0.0        | 0.0        | 0.014      | 0.009        | 0.006        | 40.0         | 3248        
+
+Results written to: 06_Results_or_Expected_Output/evaluation_results.csv
+
+--- Attack-Detection Rate & Functional-Test Pass Rate (Section 3.10.3) ---
+==============================================================================
+ATTACK SIMULATOR - Malicious Test Scenarios (Section 3.8.3)
+==============================================================================
+[PASS] 1. Unknown device identifier                  -> REJECTED  (no challenge issued)
+[PASS] 2. Registered ID with incorrect secret        -> REJECTED  (invalid_response)
+[PASS] 3. Replayed authentication request            -> REJECTED  (replayed_auth_nonce)
+[PASS] 4. Replayed encrypted sensor message          -> REJECTED  (replayed_message)
+[PASS] 5. Modified ciphertext                        -> REJECTED  (invalid_tag)
+[PASS] 6. Modified authentication tag                -> REJECTED  (invalid_tag)
+[PASS] 7. Expired timestamp                          -> REJECTED  (expired_timestamp)
+[PASS] 8. Reused nonce                               -> REJECTED  (replayed_message)
+[PASS] 9. Revoked device identifier                  -> REJECTED  (no challenge issued)
+[PASS] 10. Repeated invalid requests (local flood)   -> REJECTED  (all 20 requests rejected)
+------------------------------------------------------------------------------
+Result: 10/10 scenarios PASSED (attack correctly detected and rejected).
+Attack-detection rate: 100.0%
+
+--- Overall Evaluation Summary ---
+Authentication success rate  : 100.0% (target: 100%)
+False Acceptance Rate (FAR)  : 0.0% (target: 0%)
+False Rejection Rate (FRR)   : 0.0% (target: 0%)
+Attack-detection rate        : 100.0%
+Functional-test pass rate    : 100.0%
+
+
+##########################################################################################
+# DONE - all demos completed successfully
+##########################################################################################

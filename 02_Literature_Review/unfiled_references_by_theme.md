@@ -1,7 +1,7 @@
-# Additional References Not Yet Filed as PDFs (from 04_References/04References.md)
+# Additional References Not Yet Filed as PDFs (from 07_References/04References.md)
 
 `01_Research_Papers/` currently has PDFs filed for **22 of the 44** papers already in
-the group's verified reference list (`04_References/04References.md`). The remaining 22
+the group's verified reference list (`07_References/04References.md`). The remaining 22
 are listed below, grouped by the theme they most likely belong to, so whoever adds more
 PDFs can file them straight into the matching folder.
 
@@ -47,4 +47,4 @@ marked ML/Physical-Layer below into it.
 
 **Note:** exact page ranges/volume numbers for a few entries (e.g. the "AP-CDE" 2023
 entry with no listed authors) still need verification against IEEE Xplore before use —
-see the verification note already in `04_References/04References.md`.
+see the verification note already in `07_References/04References.md`.

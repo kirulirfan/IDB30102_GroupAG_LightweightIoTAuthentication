@@ -1,0 +1,11 @@
+scenario,expected_rejected,actually_rejected,passed,reason
+1. Unknown device identifier,True,True,True,no challenge issued
+2. Registered ID with incorrect secret,True,True,True,invalid_response
+3. Replayed authentication request,True,True,True,replayed_auth_nonce
+4. Replayed encrypted sensor message,True,True,True,replayed_message
+5. Modified ciphertext,True,True,True,invalid_tag
+6. Modified authentication tag,True,True,True,invalid_tag
+7. Expired timestamp,True,True,True,expired_timestamp
+8. Reused nonce,True,True,True,replayed_message
+9. Revoked device identifier,True,True,True,no challenge issued
+10. Repeated invalid requests (local flood),True,True,True,all 20 requests rejected

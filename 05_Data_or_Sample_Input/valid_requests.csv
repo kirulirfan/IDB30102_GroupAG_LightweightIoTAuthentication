@@ -1,0 +1,7 @@
+device_id,request_type,accepted,latency_ms,reason
+device-001,mutual_authentication,True,0.0551,ok
+device-001,encrypted_message,True,0.0221,ok
+device-002,mutual_authentication,True,0.0279,ok
+device-002,encrypted_message,True,0.0098,ok
+device-003,mutual_authentication,True,0.0183,ok
+device-003,encrypted_message,True,0.0078,ok

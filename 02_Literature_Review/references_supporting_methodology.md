@@ -1,9 +1,9 @@
 # References Supporting the Proposed Methodology
 
 All citations below are copied exactly from the group's verified reference list at
-`../04_References/04References.md` (44 references, real DOIs). This file only selects
+`../07_References/04References.md` (44 references, real DOIs). This file only selects
 the subset that specifically supports the **framework design and methodology choices**
-made in Chapter 3; for the complete list, see `04_References/04References.md` directly.
+made in Chapter 3; for the complete list, see `07_References/04References.md` directly.
 
 ## References Supporting the Chosen Framework Design
 (Lightweight cryptography and mutual authentication — the core basis of the proposed
@@ -56,6 +56,6 @@ Section 6 "Research Methodology"). Supporting reference:
   Security), IDB30102 Research Methodology, UniKL MIIT.
 
 **Verification note:** every citation above is copied from
-`../04_References/04References.md`, which the group has already prepared with working
+`../07_References/04References.md`, which the group has already prepared with working
 DOIs. Keep that file as the single source of truth — if a citation changes there, update
 it here too so the two files never drift apart.
